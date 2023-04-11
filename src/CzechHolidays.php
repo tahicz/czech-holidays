@@ -33,6 +33,16 @@
             '12-26' => '2. svátek vánoční'
         ];
 
+        private const OPENING_ON_HOLIDAYS = [
+            '01-01' => Holiday::SHOP_CLOSE,
+            '05-08' => Holiday::SHOP_CLOSE,
+            '09-28' => Holiday::SHOP_CLOSE,
+            '10-28' => Holiday::SHOP_CLOSE,
+            '12-24' => Holiday::SHOP_CLOSE,
+            '12-25' => Holiday::SHOP_CLOSE,
+            '12-26' => Holiday::SHOP_CLOSE,
+        ];
+
         private const GOOD_FRIDAY   = 'Velký pátek';
         private const EASTER_MONDAY = 'Velikonoční pondělí';
 
@@ -102,7 +112,21 @@
                 $year = (int)date('Y');
             }
             foreach (self::HOLIDAYS as $date => $name) {
-                $holiday = new Holiday($name, new DateTimeImmutable($year . '-' . $date), false);
+                if($date === '12-24'){
+                    $holiday = new Holiday(
+                        $name,
+                        new DateTimeImmutable($year . '-' . $date),
+                        false,
+                        key_exists($date, self::OPENING_ON_HOLIDAYS) ? self::OPENING_ON_HOLIDAYS[$date] : Holiday::SHOP_OPEN_MORNING
+                    );
+                } else {
+                    $holiday = new Holiday(
+                        $name,
+                        new DateTimeImmutable($year . '-' . $date),
+                        false,
+                        key_exists($date, self::OPENING_ON_HOLIDAYS) ? self::OPENING_ON_HOLIDAYS[$date] : Holiday::SHOP_OPEN
+                    );
+                }
                 $index   = $holiday->getDate()->format(self::INDEX_FORMAT);
                 $list->set($index, $holiday);
             }
@@ -132,7 +156,7 @@
 
             return [
                 new Holiday(self::GOOD_FRIDAY, $goodFriday, true),
-                new Holiday(self::EASTER_MONDAY, $goodFriday->modify('next monday'), true)
+                new Holiday(self::EASTER_MONDAY, $goodFriday->modify('next monday'), true, Holiday::SHOP_CLOSE)
             ];
         }
     }
