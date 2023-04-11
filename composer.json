@@ -1,0 +1,32 @@
+{
+  "name": "tahicz/czech-holidays",
+  "description": "Utility for working with Czech holidays.",
+  "keywords": [
+    "holidays",
+    "czech"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jan Mlatec",
+      "email": "tahicz@tahicz.net",
+      "homepage": "https://www.tahicz.net"
+    }
+  ],
+  "config": {
+    "sort-packages": true,
+    "platform": {
+      "php": "7.4"
+    }
+  },
+  "require": {
+    "php": ">=7.4",
+    "ext-calendar": "*",
+    "doctrine/collections": "^1.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "tahicz\\": "src/"
+    }
+  }
+}
